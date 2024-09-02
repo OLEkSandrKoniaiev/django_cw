@@ -7,6 +7,8 @@ from rest_framework.mixins import (
     UpdateModelMixin,
 )
 
+from core.paginations import PagePagination
+
 from apps.cars.models import CarModel
 from apps.cars.serializers import CarSerializer
 
@@ -50,6 +52,7 @@ from apps.cars.serializers import CarSerializer
 
 class CarListCreateView(ListCreateAPIView):
     serializer_class = CarSerializer
+    pagination_class = PagePagination
     queryset = CarModel.objects.all()
 
 
