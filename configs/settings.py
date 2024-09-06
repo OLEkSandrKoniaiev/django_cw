@@ -25,13 +25,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 
     # my_apps
-    'apps.cars',
-    'apps.auto_parks',
     'core',
-    'apps.users',
     'apps.auth',
+    'apps.users',
+    'apps.auto_parks',
+    'apps.cars',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +107,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'storage')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
