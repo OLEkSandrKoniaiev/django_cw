@@ -9,3 +9,6 @@ class DealershipListCreateView(ListCreateAPIView):
     serializer_class = DealershipSerializer
     queryset = DealershipModel.objects.all()
     permission_classes = (IsAuthenticated,)
+
+    def get_serializer_context(self):
+        return {'request': self.request}
