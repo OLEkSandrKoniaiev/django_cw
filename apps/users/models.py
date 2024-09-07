@@ -3,6 +3,7 @@ from django.db import models
 
 from core.models import BaseModel
 
+# from apps.dealerships.models import DealershipModel
 from apps.users.managers import UserManager
 
 
@@ -16,6 +17,14 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
     is_staff = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     objects = UserManager()
+    is_premium = models.BooleanField(default=False)
+    dealership_id = models.ForeignKey(
+        'dealerships.DealershipModel',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='users'
+    )
 
 
 class ProfileModel(BaseModel):
