@@ -90,3 +90,13 @@ class UserSerializer(serializers.ModelSerializer):
         ProfileModel.objects.create(**profile, user=user)
         EmailService.register_email(user)
         return user
+
+
+class UserDeleteSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True)
+
+    def validate_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Incorrect password.")
+        return value

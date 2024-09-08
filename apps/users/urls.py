@@ -6,6 +6,7 @@ from apps.users.views import (
     ProfileUpdateView,
     UserBlockView,
     UserCreateView,
+    UserDeleteView,
     UserListView,
     UserToAdminView,
     UserToPremiumView,
@@ -15,6 +16,7 @@ from apps.users.views import (
 urlpatterns = [
     path('', UserListView.as_view(), name='user-list'),
     path('/create', UserCreateView.as_view(), name='user-create'),
+    path('/delete', UserDeleteView.as_view(), name='user-delete'),
     path('/<int:pk>/block', UserBlockView.as_view(), name='user-block'),
     path('/<int:pk>/unblock', UserUnBlockView.as_view(), name='user-unblock'),
     path('/<int:pk>/admin', UserToAdminView.as_view(), name='user-to-admin'),
