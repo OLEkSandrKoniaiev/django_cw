@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db.transaction import atomic
+from django.utils import timezone
 
 from rest_framework import serializers
 
@@ -14,6 +15,29 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileModel
         fields = ('id', 'name', 'surname', 'age', 'city', 'created_at', 'updated_at')
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileModel
+        fields = ('name', 'surname', 'age', 'city')
+
+    def update(self, instance, validated_data):
+        now = timezone.now()
+
+        has_changes = False
+        for field, value in validated_data.items():
+            if getattr(instance, field) != value:
+                has_changes = True
+                break
+
+        if not has_changes:
+            raise serializers.ValidationError("No changes detected.")
+
+        if instance.updated_at and (now - instance.updated_at).days < 30:
+            raise serializers.ValidationError("You can only update your profile once a month.")
+
+        return super().update(instance, validated_data)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -50,6 +74,14 @@ class UserSerializer(serializers.ModelSerializer):
                 'write_only': True,
             }
         }
+
+    @atomic
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile', None)
+        user = super().update(instance, validated_data)
+        if profile_data:
+            ProfileModel.objects.filter(user=user).update(**profile_data)
+        return user
 
     @atomic
     def create(self, validated_data: dict):

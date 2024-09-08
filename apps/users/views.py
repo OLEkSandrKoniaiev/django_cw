@@ -1,13 +1,13 @@
 from django.contrib.auth import get_user_model
 
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from core.permissions.is_super_user_permission import IsSuperUser
 
-from apps.users.serializers import UserSerializer
+from apps.users.serializers import ProfileUpdateSerializer, UserSerializer
 
 UserModel = get_user_model()
 
@@ -118,3 +118,11 @@ class PremiumToUserView(GenericAPIView):
             user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
+
+
+class ProfileUpdateView(UpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProfileUpdateSerializer
+
+    def get_object(self):
+        return self.request.user.profile
