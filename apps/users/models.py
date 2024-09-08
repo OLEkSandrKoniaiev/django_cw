@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.core import validators as V
 from django.db import models
 
 from core.models import BaseModel
@@ -14,8 +15,6 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    USERNAME_FIELD = 'email'
-    objects = UserManager()
     is_premium = models.BooleanField(default=False)
     dealership = models.ForeignKey(
         'dealerships.DealershipModel',
@@ -24,6 +23,8 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
         blank=True,
         related_name='users'
     )
+    USERNAME_FIELD = 'email'
+    objects = UserManager()
 
 
 class ProfileModel(BaseModel):
@@ -31,7 +32,8 @@ class ProfileModel(BaseModel):
         db_table = 'profile'
         ordering = ('id',)
 
-    name = models.CharField(max_length=20)
-    surname = models.CharField(max_length=20)
-    age = models.IntegerField()
+    name = models.CharField(max_length=50)
+    surname = models.CharField(max_length=50, null=True, blank=True)
+    age = models.IntegerField(validators=[V.MinValueValidator(18), V.MaxValueValidator(90)])
+    city = models.CharField(max_length=50)
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='profile')
