@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from core.permissions.is_super_user_permission import IsSuperUser
@@ -19,7 +19,7 @@ class UserListView(ListAPIView):
 
 
 class UserCreateView(CreateAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     queryset = UserModel.objects.all()
     serializer_class = UserSerializer
 
@@ -85,6 +85,38 @@ class AdminToUserView(GenericAPIView):
 
         if user.is_staff:
             user.is_staff = False
+            user.save()
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+
+class UserToPremiumView(GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return UserModel.objects.exclude(pk=self.request.user.pk)
+
+    def patch(self, *args, **kwargs):
+        user = self.get_object()
+
+        if not user.is_premium:
+            user.is_premium = True
+            user.save()
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+
+class PremiumToUserView(GenericAPIView):
+    permission_classes = (IsAdminUser,)
+
+    def get_queryset(self):
+        return UserModel.objects.exclude(pk=self.request.user.pk)
+
+    def patch(self, *args, **kwargs):
+        user = self.get_object()
+
+        if user.is_premium:
+            user.is_premium = False
             user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
