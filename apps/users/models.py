@@ -36,4 +36,5 @@ class ProfileModel(BaseModel):
     surname = models.CharField(max_length=50, null=True, blank=True)
     age = models.IntegerField(validators=[V.MinValueValidator(18), V.MaxValueValidator(90)])
     city = models.CharField(max_length=50)
+    phone = models.CharField(max_length=12)
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='profile')

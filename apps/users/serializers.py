@@ -14,13 +14,13 @@ UserModel = get_user_model()
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileModel
-        fields = ('id', 'name', 'surname', 'age', 'city', 'created_at', 'updated_at')
+        fields = ('id', 'name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at')
 
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileModel
-        fields = ('name', 'surname', 'age', 'city')
+        fields = ('name', 'surname', 'age', 'city', 'phone')
 
     def update(self, instance, validated_data):
         now = timezone.now()
