@@ -1,11 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import (
-    CreateAPIView,
-    GenericAPIView,
-    ListAPIView,
-    RetrieveUpdateDestroyAPIView,
-    UpdateAPIView,
-)
+from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView, RetrieveUpdateAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
@@ -20,18 +14,20 @@ from apps.cars.serializers import CarPhotoSerializer, CarSerializer
 class CarListView(ListAPIView):
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
-    filterset_class = CarFilter
     permission_classes = (AllowAny,)
+    filterset_class = CarFilter
 
 
-class CarRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+class CarCreateView(CreateAPIView):
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
+    permission_classes = (IsAuthenticated,)
 
-    def get_permissions(self):
-        if self.request.method == 'DELETE':
-            return (IsAuthenticated(),)
-        return (AllowAny(),)
+
+# class CarRetrieveUpdateView(RetrieveUpdateAPIView):
+#     serializer_class = CarSerializer
+#     queryset = CarModel.objects.all()
+#     # permission_classes =
 
 
 class CarAddPhotoView(UpdateAPIView):
@@ -44,11 +40,3 @@ class CarAddPhotoView(UpdateAPIView):
         car = self.get_object()
         car.photo.delete()
         super().perform_update(serializer)
-
-
-# class TestEmailView(GenericAPIView):
-#     permission_classes = (AllowAny,)
-#
-#     def get(self, *args, **kwargs):
-#         EmailService.send_test()
-#         return Response(status=status.HTTP_204_NO_CONTENT)

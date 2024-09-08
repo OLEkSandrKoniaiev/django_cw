@@ -8,8 +8,8 @@ from apps.dealerships.models import DealershipModel
 class DealershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = DealershipModel
-        fields = ('id', 'name', 'admin_id', 'address', 'contact_phone', 'website', 'description')
-        read_only_fields = ('admin_id',)
+        fields = ('id', 'name', 'address', 'contact_phone', 'website', 'description')
+        # read_only_fields = ('admin_id',)
 
     @atomic
     def create(self, validated_data):

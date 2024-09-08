@@ -16,13 +16,7 @@ class UserModel(AbstractBaseUser, PermissionsMixin, BaseModel):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_premium = models.BooleanField(default=False)
-    dealership = models.ForeignKey(
-        'dealerships.DealershipModel',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='users'
-    )
+    dealership_id = models.IntegerField(null=True, blank=True)
     USERNAME_FIELD = 'email'
     objects = UserManager()
 
