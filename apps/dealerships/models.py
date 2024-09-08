@@ -9,11 +9,12 @@ class DealershipModel(BaseModel):
         ordering = ('id',)
 
     name = models.CharField(max_length=255)
-    # admin = models.ForeignKey(
-    #     'users.UserModel',
-    #     on_delete=models.CASCADE,
-    #     related_name='dealerships'
-    # )
+    admin = models.ForeignKey(
+        'users.UserModel',
+        on_delete=models.CASCADE,
+        null=True,
+        related_name='dealerships'
+    )
     address = models.CharField(max_length=255)
     contact_phone = models.CharField(max_length=13)
     website = models.CharField(max_length=255)

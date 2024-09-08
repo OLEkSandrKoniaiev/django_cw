@@ -43,11 +43,12 @@ class CarModel(BaseModel):
     price = models.IntegerField(validators=(V.MinValueValidator(100), V.MaxValueValidator(100_000_000)))
     currency = models.CharField(max_length=3, choices=CurrencyChoices.choices)
     is_new = models.BooleanField(default=False)
-    # user = models.ForeignKey(
-    #     'users.UserModel',
-    #     on_delete=models.CASCADE,
-    #     related_name='cars'
-    # )
+    user = models.ForeignKey(
+        'users.UserModel',
+        on_delete=models.CASCADE,
+        null=True,
+        related_name='cars'
+    )
     # brand = models.CharField(max_length=10, validators=(V.MinLengthValidator(2),))
     # body_type = models.CharField(max_length=9, choices=BodyTypeChoices.choices, blank=False, null=False)
     # auto_park = models.ForeignKey(AutoParkModel, on_delete=models.CASCADE, related_name='cars')
