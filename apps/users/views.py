@@ -24,7 +24,7 @@ class UserCreateView(CreateAPIView):
     serializer_class = UserSerializer
 
 
-class UserDeleteView(DestroyAPIView):
+class UserDestroyView(DestroyAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserDeleteSerializer
 
