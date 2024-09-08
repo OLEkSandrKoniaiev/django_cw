@@ -93,15 +93,13 @@ class AdminToUserView(GenericAPIView):
 class UserToPremiumView(GenericAPIView):
     permission_classes = (IsAuthenticated,)
 
-    def get_queryset(self):
-        return UserModel.objects.exclude(pk=self.request.user.pk)
-
     def patch(self, *args, **kwargs):
-        user = self.get_object()
+        user = self.request.user
 
         if not user.is_premium:
             user.is_premium = True
             user.save()
+
         serializer = UserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
 

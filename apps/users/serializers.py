@@ -4,7 +4,6 @@ from django.db.transaction import atomic
 from rest_framework import serializers
 
 from core.services.email_service import EmailService
-from core.services.jwt_service import JWTService
 
 from apps.users.models import ProfileModel
 
@@ -38,16 +37,13 @@ class UserSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id',
-            'email',
-            'password',
             'is_active',
             'is_premium',
             'is_staff',
             'is_superuser',
             'last_login',
             'created_at',
-            'updated_at',
-            'dealership_id'
+            'updated_at'
         )
         extra_kwargs = {
             'password': {
