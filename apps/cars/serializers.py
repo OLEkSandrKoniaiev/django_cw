@@ -1,5 +1,4 @@
 from django.db import transaction
-from django.db.transaction import atomic
 
 from rest_framework import serializers
 
