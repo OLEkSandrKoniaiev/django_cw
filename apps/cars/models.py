@@ -53,11 +53,10 @@ class CarModel(BaseModel):
         null=True,
         related_name='cars'
     )
-
     objects = CarManager()
 
 
-class CarProfileView(BaseModel):
+class CarProfileModel(BaseModel):
     class Meta:
         db_table = 'car_profiles'
         ordering = ('id',)

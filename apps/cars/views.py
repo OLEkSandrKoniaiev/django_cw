@@ -8,7 +8,7 @@ from core.services.email_service import EmailService
 
 from apps.cars.filter import CarFilter
 from apps.cars.models import CarModel
-from apps.cars.serializers import CarPhotoSerializer, CarSerializer
+from apps.cars.serializers import CarSerializer
 
 
 class CarListView(ListAPIView):
@@ -30,13 +30,13 @@ class CarCreateView(CreateAPIView):
 #     # permission_classes =
 
 
-class CarAddPhotoView(UpdateAPIView):
-    permission_classes = (AllowAny,)
-    serializer_class = CarPhotoSerializer
-    queryset = CarModel.objects.all()
-    http_method_names = ('put',)
-
-    def perform_update(self, serializer):
-        car = self.get_object()
-        car.photo.delete()
-        super().perform_update(serializer)
+# class CarAddPhotoView(UpdateAPIView):
+#     permission_classes = (AllowAny,)
+#     serializer_class = CarPhotoSerializer
+#     queryset = CarModel.objects.all()
+#     http_method_names = ('put',)
+#
+#     def perform_update(self, serializer):
+#         car = self.get_object()
+#         car.photo.delete()
+#         super().perform_update(serializer)

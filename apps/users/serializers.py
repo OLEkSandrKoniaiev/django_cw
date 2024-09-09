@@ -20,7 +20,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileModel
-        fields = ('name', 'surname', 'age', 'city', 'phone')
+        fields = ('name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at')
 
     def update(self, instance, validated_data):
         now = timezone.now()
