@@ -71,5 +71,5 @@ class CarProfileModel(BaseModel):
     engine_capacity = models.IntegerField(validators=(V.MinValueValidator(0), V.MaxValueValidator(100)), null=True)
     transmission = models.CharField(max_length=9, choices=TransmissionChoices.choices)
     body = models.CharField(max_length=9, choices=BodyTypeChoices.choices)
-    car = models.OneToOneField(CarModel, on_delete=models.CASCADE, related_name='car_profiles')
+    car = models.OneToOneField(CarModel, on_delete=models.CASCADE, related_name='car_profile')
     # photo = models.ImageField(upload_to=FileService.upload_car_photo, blank=True)

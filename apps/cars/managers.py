@@ -1,20 +1,10 @@
 from django.db import models
 
-
-class CarQuerySet(models.QuerySet):
-    def less_than_year(self, year):
-        return self.filter(year__lt=year)
-
-    def only_audi(self):
-        return self.filter(brand='audi')
+from rest_framework.exceptions import ValidationError
 
 
 class CarManager(models.Manager):
-    def get_queryset(self):
-        return CarQuerySet(self.model)
-
-    def less_than_year(self, year):
-        return self.get_queryset().less_than_year(year)
-
-    def only_audi(self):
-        return self.get_queryset().only_audi()
+    def create_car(self, user, **kwargs):
+        if not user.is_premium and self.filter(user=user).count() >= 1:
+            raise ValidationError("Non-premium users can only add one car.")
+        return self.create(user=user, **kwargs)
