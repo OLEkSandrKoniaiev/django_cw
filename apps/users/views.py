@@ -35,7 +35,7 @@ class UserDestroyView(DestroyAPIView):
         user = request.user
         user.delete()
 
-        return Response({"detail": ""}, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserBlockView(GenericAPIView):
