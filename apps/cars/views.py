@@ -1,5 +1,14 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView, ListAPIView, RetrieveUpdateAPIView, UpdateAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    GenericAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    RetrieveUpdateAPIView,
+    RetrieveUpdateDestroyAPIView,
+    UpdateAPIView,
+)
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
@@ -7,8 +16,8 @@ from core.permissions.is_super_user_permission import IsSuperUser
 from core.services.email_service import EmailService
 
 from apps.cars.filter import CarFilter
-from apps.cars.models import CarModel
-from apps.cars.serializers import CarSerializer
+from apps.cars.models import BrandModel, CarModel
+from apps.cars.serializers import BrandSerializer, CarSerializer
 
 
 class CarListView(ListAPIView):
@@ -40,3 +49,33 @@ class CarCreateView(CreateAPIView):
 #         car = self.get_object()
 #         car.photo.delete()
 #         super().perform_update(serializer)
+
+
+class BrandListView(ListAPIView):
+    serializer_class = BrandSerializer
+    queryset = BrandModel.objects.all()
+    permission_classes = (AllowAny,)
+
+
+class BrandCreateView(CreateAPIView):
+    serializer_class = BrandSerializer
+    queryset = BrandModel.objects.all()
+    permission_classes = (IsAdminUser,)
+
+
+class BrandRetrieveView(RetrieveAPIView):
+    serializer_class = BrandSerializer
+    queryset = BrandModel.objects.all()
+    permission_classes = (AllowAny,)
+
+
+class BrandUpdateView(UpdateAPIView):
+    serializer_class = BrandSerializer
+    queryset = BrandModel.objects.all()
+    permission_classes = (IsAdminUser,)
+
+
+class BrandDestroyView(DestroyAPIView):
+    serializer_class = BrandSerializer
+    queryset = BrandModel.objects.all()
+    permission_classes = (IsAdminUser,)
