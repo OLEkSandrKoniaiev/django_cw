@@ -16,26 +16,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = ProfileModel
         fields = ('id', 'name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at')
 
-
-class ProfileUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProfileModel
-        fields = ('name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at')
-
     def update(self, instance, validated_data):
-        now = timezone.now()
-
-        has_changes = False
-        for field, value in validated_data.items():
-            if getattr(instance, field) != value:
-                has_changes = True
-                break
-
-        if not has_changes:
-            raise serializers.ValidationError("No changes detected.")
-
-        if instance.updated_at and (now - instance.updated_at).days < 30:
-            raise serializers.ValidationError("You can only update your profile once a month.")
+        if not UserModel.objects.can_update_user(user=instance):
+            raise serializers.ValidationError("Updates can be made no more than once every 30 days.")
+        
+        if not UserModel.objects.has_changes(user=instance, validated_data=validated_data):
+            raise serializers.ValidationError("No changes have been made.")
 
         return super().update(instance, validated_data)
 
@@ -90,13 +76,3 @@ class UserSerializer(serializers.ModelSerializer):
         ProfileModel.objects.create(**profile, user=user)
         EmailService.register_email(user)
         return user
-
-
-class UserDeleteSerializer(serializers.Serializer):
-    password = serializers.CharField(write_only=True)
-
-    def validate_password(self, value):
-        user = self.context['request'].user
-        if not user.check_password(value):
-            raise serializers.ValidationError("Incorrect password.")
-        return value

@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from core.permissions.is_super_user_permission import IsSuperUser
 
-from apps.users.serializers import ProfileUpdateSerializer, UserDeleteSerializer, UserSerializer
+from apps.users.serializers import ProfileSerializer, UserSerializer
 
 UserModel = get_user_model()
 
@@ -26,16 +26,19 @@ class UserCreateView(CreateAPIView):
 
 class UserDestroyView(DestroyAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserDeleteSerializer
+    serializer_class = UserSerializer
 
     def delete(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
+        password = request.data.get('password')
         user = request.user
+
+        if not user.check_password(password):
+            return Response({"error": "Incorrect password."}, status=status.HTTP_400_BAD_REQUEST)
+
         user.delete()
 
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response( status=status.HTTP_204_NO_CONTENT)
+
 
 
 class UserBlockView(GenericAPIView):
@@ -136,7 +139,7 @@ class PremiumToUserView(GenericAPIView):
 
 class ProfileUpdateView(UpdateAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = ProfileUpdateSerializer
+    serializer_class = ProfileSerializer
 
     def get_object(self):
         return self.request.user.profile

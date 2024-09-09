@@ -1,4 +1,5 @@
 from django.contrib.auth.models import UserManager as Manager
+from django.utils import timezone
 
 
 class UserManager(Manager):
@@ -29,3 +30,18 @@ class UserManager(Manager):
             raise ValueError('Superuser must have is_superuser=True')
         user = self.create_user(email, password, **extra_fields)
         return user
+
+    @staticmethod
+    def has_changes(user, validated_data):
+        for field, value in validated_data.items():
+            if getattr(user, field) != value:
+                return True
+        return False
+
+    @staticmethod
+    def can_update_user(user):
+        now = timezone.now()
+        if (now - user.updated_at).total_seconds() > 86400 * 30:
+            return True
+        else:
+            return False
