@@ -39,10 +39,4 @@ class CarFilter(filters.FilterSet):
     is_new = filters.BooleanFilter('is_new')
 
     # sort
-    order = filters.OrderingFilter(
-        fields=(
-            'price',
-            'year',
-            ('id', 'asd')
-        )
-    )
+    order = filters.OrderingFilter(fields=('price', 'year', 'id'))

@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core import validators as V
 from django.db import models
 
+from core.enums.regex_enum import RegexEnum
 from core.models import BaseModel
 
 from apps.users.managers import UserManager
@@ -30,5 +31,5 @@ class ProfileModel(BaseModel):
     surname = models.CharField(max_length=50, null=True, blank=True)
     age = models.IntegerField(validators=[V.MinValueValidator(18), V.MaxValueValidator(90)])
     city = models.CharField(max_length=50)
-    phone = models.CharField(max_length=12)
+    phone = models.CharField(max_length=13, validators=[V.RegexValidator(*RegexEnum.PHONE.value)])
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='profile')

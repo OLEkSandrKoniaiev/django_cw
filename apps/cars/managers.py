@@ -12,12 +12,9 @@ class CarManager(models.Manager):
 
     @staticmethod
     def can_update_car(car):
-        if car.is_active:
-            now = timezone.now()
-            if (now - car.updated_at).total_seconds() > 86400:
-                return True
-            else:
-                return False
+        now = timezone.now()
+        if (now - car.updated_at).total_seconds() > 86400:
+            return True
         else:
             return False
 
@@ -27,3 +24,34 @@ class CarManager(models.Manager):
             if getattr(car, field) != value:
                 return True
         return False
+
+    @staticmethod
+    def bad_words_check(car, validated_data):
+        bad_words = ('fuck',)
+
+        car_data = car.__dict__.copy()
+
+        for field, value in validated_data.items():
+            if field != 'car_profile':
+                car_data[field] = value
+
+        for field, value in car_data.items():
+            if isinstance(value, str):
+                if any(bad_word in value.lower() for bad_word in bad_words):
+                    return False
+
+        car_profile_data = car.car_profile.__dict__.copy()
+
+        if 'car_profile' in validated_data:
+            profile_data = validated_data['car_profile']
+            for field, value in profile_data.items():
+                car_profile_data[field] = value
+
+        for field, value in car_profile_data.items():
+            if isinstance(value, str):
+                if any(bad_word in value.lower() for bad_word in bad_words):
+                    return False
+
+        return True
+
+

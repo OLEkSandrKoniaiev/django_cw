@@ -1,5 +1,6 @@
 from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
 
 from core.permissions.is_car_owner import IsOwner
 from core.permissions.is_car_owner_or_admin import IsOwnerOrAdmin
@@ -97,6 +98,18 @@ class CarUpdateView(UpdateAPIView):
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
     permission_classes = (IsOwner,)
+
+    def patch(self, request, *args, **kwargs):
+        serializer = self.get_serializer(instance=self.get_object(), data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        instance = serializer.save()
+        message = "Update successful"
+
+        if isinstance(instance, tuple):
+            instance, message = instance
+
+        return Response({'detail': message, 'data': CarSerializer(instance).data})
 
 
 class CarDestroyView(DestroyAPIView):

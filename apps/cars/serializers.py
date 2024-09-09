@@ -66,6 +66,12 @@ class CarSerializer(serializers.ModelSerializer):
             'updated_at',
             'car_profile'
         )
+        read_only_fields = (
+            'id',
+            'is_active',
+            'created_at',
+            'updated_at'
+        )
 
     @transaction.atomic
     def create(self, validated_data):
@@ -83,29 +89,33 @@ class CarSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        if not CarModel.objects.can_update_car(car=instance):
-            raise serializers.ValidationError("Updates can be made no more than once a day or the car is inactive.")
-
+        if instance.is_active:
+            if not CarModel.objects.can_update_car(car=instance):
+                raise serializers.ValidationError("Updates can be made no more than once a day.")
         if not CarModel.objects.has_changes(car=instance, validated_data=validated_data):
             raise serializers.ValidationError("No changes have been made.")
 
-        model = validated_data.pop('model', None)
-        if model and isinstance(model, int):
-            model = ModelModel.objects.get(id=model)
-        if model:
-            instance.model = model
+        if instance.edit_attempts >= 0:
+            if not CarModel.objects.bad_words_check(car=instance, validated_data=validated_data):
+                instance.edit_attempts -= 1
+                instance.is_active = False
+                instance.save()
+                return instance, "You have bad words, please try again."
+            instance.is_active = True
+            instance.edit_attempts = 2
+        else:
+            raise serializers.ValidationError("No more attempts left.")
 
         profile_data = validated_data.pop('car_profile', None)
         if profile_data:
-            CarProfileModel.objects.filter(car=instance).update(**profile_data)
+            car_profile = instance.car_profile
+            for field, value in profile_data.items():
+                setattr(car_profile, field, value)
+            car_profile.save()
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
-        instance.save()
-        return instance
 
-# class CarPhotoSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = CarModel
-#         fields = ('photo',)
-#         extra_kwargs = {'photo': {'required': True}}
+        instance.save()
+
+        return instance
