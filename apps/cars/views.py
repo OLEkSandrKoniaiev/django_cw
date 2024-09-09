@@ -1,25 +1,15 @@
-from rest_framework import status
-from rest_framework.generics import (
-    CreateAPIView,
-    DestroyAPIView,
-    GenericAPIView,
-    ListAPIView,
-    RetrieveAPIView,
-    RetrieveUpdateAPIView,
-    RetrieveUpdateDestroyAPIView,
-    UpdateAPIView,
-)
+from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
-from rest_framework.response import Response
 
-from core.permissions.is_super_user_permission import IsSuperUser
-from core.services.email_service import EmailService
+from core.permissions.is_car_owner import IsOwner
+from core.permissions.is_car_owner_or_admin import IsOwnerOrAdmin
 
 from apps.cars.filter import CarFilter
 from apps.cars.models import BrandModel, CarModel, ModelModel
 from apps.cars.serializers import BrandSerializer, CarSerializer, ModelSerializer
 
 
+# brand views
 class BrandListView(ListAPIView):
     serializer_class = BrandSerializer
     queryset = BrandModel.objects.all()
@@ -51,6 +41,7 @@ class BrandDestroyView(DestroyAPIView):
     permission_classes = (IsAdminUser,)
 
 
+# model views
 class ModelListView(ListAPIView):
     serializer_class = ModelSerializer
     queryset = ModelModel.objects.all()
@@ -82,6 +73,7 @@ class ModelDestroyView(DestroyAPIView):
     permission_classes = (IsAdminUser,)
 
 
+# car views
 class CarListView(ListAPIView):
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
@@ -93,3 +85,21 @@ class CarCreateView(CreateAPIView):
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
     permission_classes = (IsAuthenticated,)
+
+
+class CarRetrieveView(RetrieveAPIView):
+    serializer_class = CarSerializer
+    queryset = CarModel.objects.all()
+    permission_classes = (AllowAny,)
+
+
+class CarUpdateView(UpdateAPIView):
+    serializer_class = CarSerializer
+    queryset = CarModel.objects.all()
+    permission_classes = (IsOwner,)
+
+
+class CarDestroyView(DestroyAPIView):
+    serializer_class = CarSerializer
+    queryset = CarModel.objects.all()
+    permission_classes = (IsOwnerOrAdmin,)

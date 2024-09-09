@@ -6,8 +6,6 @@ from django.db import models
 from core.models import BaseModel
 from core.services.file_service import FileService
 
-from apps.auth.views import UserModel
-from apps.auto_parks.models import AutoParkModel
 from apps.cars.choices.body_choices import BodyTypeChoices
 from apps.cars.choices.currency_choices import CurrencyChoices
 from apps.cars.choices.engine_choices import EngineChoices

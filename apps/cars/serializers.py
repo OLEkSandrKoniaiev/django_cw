@@ -82,6 +82,29 @@ class CarSerializer(serializers.ModelSerializer):
         CarProfileModel.objects.create(car=car, **profile_data)
         return car
 
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        if not CarModel.objects.can_update_car(car=instance):
+            raise serializers.ValidationError("Updates can be made no more than once a day or the car is inactive.")
+
+        if not CarModel.objects.has_changes(car=instance, validated_data=validated_data):
+            raise serializers.ValidationError("No changes have been made.")
+
+        model = validated_data.pop('model', None)
+        if model and isinstance(model, int):
+            model = ModelModel.objects.get(id=model)
+        if model:
+            instance.model = model
+
+        profile_data = validated_data.pop('car_profile', None)
+        if profile_data:
+            CarProfileModel.objects.filter(car=instance).update(**profile_data)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+
 # class CarPhotoSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = CarModel
