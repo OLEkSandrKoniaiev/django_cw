@@ -6,7 +6,7 @@ from django.db import models
 from core.models import BaseModel
 from core.services.file_service import FileService
 
-from apps.cars.choices.body_choices import BodyTypeChoices
+from apps.cars.choices.body_choices import BodyChoices
 from apps.cars.choices.currency_choices import CurrencyChoices
 from apps.cars.choices.engine_choices import EngineChoices
 from apps.cars.choices.transmission_choices import TransmissionChoices
@@ -68,6 +68,6 @@ class CarProfileModel(BaseModel):
     engine = models.CharField(max_length=7, choices=EngineChoices.choices)
     engine_capacity = models.IntegerField(validators=(V.MinValueValidator(0), V.MaxValueValidator(100)), null=True)
     transmission = models.CharField(max_length=9, choices=TransmissionChoices.choices)
-    body = models.CharField(max_length=9, choices=BodyTypeChoices.choices)
+    body = models.CharField(max_length=9, choices=BodyChoices.choices)
     car = models.OneToOneField(CarModel, on_delete=models.CASCADE, related_name='car_profile')
     # photo = models.ImageField(upload_to=FileService.upload_car_photo, blank=True)
