@@ -1,10 +1,14 @@
 import os
+import random
 
+from django.contrib.auth import get_user_model
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 
 from core.dataclasses.user_dataclass import User
 from core.services.jwt_service import ActivateToken, ApprovalToken, JWTService, RecoveryToken
+
+UserModel = get_user_model()
 
 
 class EmailService:
@@ -42,3 +46,14 @@ class EmailService:
     @classmethod
     def warning_email(cls, user: User):
         cls.__send_email(user.email, 'warning.html', {}, 'Warning')
+
+    @classmethod
+    def check_badwords_email(cls, user_id: int, car_id: int):
+        managers = UserModel.objects.filter(is_active=True, is_staff=True, is_superuser=False)
+        manager = random.choice(managers)
+        cls.__send_email(
+            manager.email,
+            'badwords.html',
+            {'user_id': f'{user_id}', 'car_id': f'{car_id}'},
+            'Badwords'
+        )

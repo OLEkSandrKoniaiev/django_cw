@@ -2,6 +2,8 @@ from django.db import transaction
 
 from rest_framework import serializers
 
+from core.services.email_service import EmailService
+
 from apps.cars.models import BrandModel, CarModel, CarProfileModel, ModelModel
 
 
@@ -104,6 +106,7 @@ class CarSerializer(serializers.ModelSerializer):
             instance.is_active = True
             instance.edit_attempts = 2
         else:
+            EmailService.check_badwords_email(user_id=instance.user_id, car_id=instance.id)
             raise serializers.ValidationError("No more attempts left.")
 
         profile_data = validated_data.pop('car_profile', None)
