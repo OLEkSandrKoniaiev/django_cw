@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from apps.cars.choices.body_type_choices import BodyTypeChoices
+from apps.cars.choices.body_choices import BodyTypeChoices
 
 
 class CarFilter(filters.FilterSet):

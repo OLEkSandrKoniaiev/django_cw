@@ -8,8 +8,10 @@ from core.services.file_service import FileService
 
 from apps.auth.views import UserModel
 from apps.auto_parks.models import AutoParkModel
-from apps.cars.choices.body_type_choices import BodyTypeChoices
+from apps.cars.choices.body_choices import BodyTypeChoices
 from apps.cars.choices.currency_choices import CurrencyChoices
+from apps.cars.choices.engine_choices import EngineChoices
+from apps.cars.choices.transmission_choices import TransmissionChoices
 from apps.cars.managers import CarManager
 
 
@@ -43,24 +45,32 @@ class CarModel(BaseModel):
     price = models.IntegerField(validators=(V.MinValueValidator(100), V.MaxValueValidator(100_000_000)))
     currency = models.CharField(max_length=3, choices=CurrencyChoices.choices)
     is_new = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+    edit_attempts = models.IntegerField(default=2)
     user = models.ForeignKey(
         'users.UserModel',
         on_delete=models.CASCADE,
         null=True,
         related_name='cars'
     )
-    # brand = models.CharField(max_length=10, validators=(V.MinLengthValidator(2),))
-    # body_type = models.CharField(max_length=9, choices=BodyTypeChoices.choices, blank=False, null=False)
-    # auto_park = models.ForeignKey(AutoParkModel, on_delete=models.CASCADE, related_name='cars')
-    # photo = models.ImageField(upload_to=FileService.upload_car_photo, blank=True)
 
     objects = CarManager()
 
 
-# class CarProfileView(BaseModel):
-#     class Meta:
-#         db_table = 'car_profiles'
-#         ordering = ('id',)
-#
-#     city =
-#     car = models.OneToOneField(CarModel, on_delete=models.CASCADE, related_name='car_profiles')
+class CarProfileView(BaseModel):
+    class Meta:
+        db_table = 'car_profiles'
+        ordering = ('id',)
+
+    city = models.CharField(max_length=60)
+    region = models.CharField(max_length=60)
+    description = models.CharField(max_length=255)
+    color = models.CharField(max_length=120)
+    owner_number = models.IntegerField(validators=(V.MinValueValidator(0), V.MaxValueValidator(100)))
+    mileage = models.IntegerField(validators=(V.MinValueValidator(0), V.MaxValueValidator(999_999)))
+    engine = models.CharField(max_length=7, choices=EngineChoices.choices)
+    engine_capacity = models.IntegerField(validators=(V.MinValueValidator(0), V.MaxValueValidator(100)), null=True)
+    transmission = models.CharField(max_length=9, choices=TransmissionChoices.choices)
+    body = models.CharField(max_length=9, choices=BodyTypeChoices.choices)
+    car = models.OneToOneField(CarModel, on_delete=models.CASCADE, related_name='car_profiles')
+    # photo = models.ImageField(upload_to=FileService.upload_car_photo, blank=True)
