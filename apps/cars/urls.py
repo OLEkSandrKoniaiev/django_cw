@@ -6,6 +6,7 @@ from apps.cars.views import (
     BrandListView,
     BrandRetrieveView,
     BrandUpdateView,
+    CarAddPhotoView,
     CarCreateView,
     CarDestroyView,
     CarListView,
@@ -23,8 +24,8 @@ urlpatterns = [
     path('/create', CarCreateView.as_view(), name='car-create'),
     path('/<int:pk>', CarRetrieveView.as_view(), name='car-retrieve'),
     path('/<int:pk>/update', CarUpdateView.as_view(), name='car-update'),
-
     path('/<int:pk>/destroy', CarDestroyView.as_view(), name='car-destroy'),
+    path('/<int:pk>/photo', CarAddPhotoView.as_view(), name='car-add-photo'),
     path('/brands', BrandListView.as_view(), name='brands-list'),
     path('/brands/create', BrandCreateView.as_view(), name='brand-create'),
     path('/brands/<int:pk>', BrandRetrieveView.as_view(), name='brand-retrieve'),

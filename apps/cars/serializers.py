@@ -44,7 +44,8 @@ class CarProfileSerializer(serializers.ModelSerializer):
             'transmission',
             'body',
             'updated_at',
-            'created_at'
+            'created_at',
+            'photo'
         )
 
 

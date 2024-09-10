@@ -70,4 +70,4 @@ class CarProfileModel(BaseModel):
     transmission = models.CharField(max_length=9, choices=TransmissionChoices.choices)
     body = models.CharField(max_length=9, choices=BodyChoices.choices)
     car = models.OneToOneField(CarModel, on_delete=models.CASCADE, related_name='car_profile')
-    # photo = models.ImageField(upload_to=FileService.upload_car_photo, blank=True)
+    photo = models.ImageField(upload_to=FileService.upload_car_photo, blank=True, null=True)

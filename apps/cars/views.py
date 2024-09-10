@@ -7,7 +7,7 @@ from core.permissions.is_car_owner_or_admin import IsOwnerOrAdmin
 
 from apps.cars.filter import CarFilter
 from apps.cars.models import BrandModel, CarModel, ModelModel
-from apps.cars.serializers import BrandSerializer, CarSerializer, ModelSerializer
+from apps.cars.serializers import BrandSerializer, CarProfileSerializer, CarSerializer, ModelSerializer
 
 
 # brand views
@@ -116,3 +116,20 @@ class CarDestroyView(DestroyAPIView):
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
     permission_classes = (IsOwnerOrAdmin,)
+
+
+class CarAddPhotoView(UpdateAPIView):
+    serializer_class = CarProfileSerializer
+    queryset = CarModel.objects.all()
+    permission_classes = (IsOwnerOrAdmin,)
+
+    def patch(self, request, *args, **kwargs):
+        car_profile = self.get_object().car_profile
+        serializer = self.get_serializer(car_profile, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        if car_profile.photo:
+            car_profile.photo.delete(save=False)
+
+        serializer.save()
+        return Response({'detail': 'Photo updated successfully', 'data': serializer.data})
