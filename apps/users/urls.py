@@ -3,6 +3,7 @@ from django.urls import path
 from apps.users.views import (
     AdminToUserView,
     PremiumToUserView,
+    ProfileAddPhotoView,
     ProfileUpdateView,
     UserBlockView,
     UserCreateView,
@@ -24,4 +25,5 @@ urlpatterns = [
     path('/premium', UserToPremiumView.as_view(), name='user-to-premium'),
     path('/<int:pk>/remove-premium', PremiumToUserView.as_view(), name='premium-to-user'),
     path('/profile', ProfileUpdateView.as_view(), name='profile-update'),
+    path('/profile/photo', ProfileAddPhotoView.as_view(), name='profile-add-photo'),
 ]

@@ -14,12 +14,12 @@ UserModel = get_user_model()
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileModel
-        fields = ('id', 'name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at')
+        fields = ('id', 'name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at', 'photo')
 
     def update(self, instance, validated_data):
         if not UserModel.objects.can_update_user(user=instance):
-            raise serializers.ValidationError("Updates can be made no more than once every 30 days.")
-        
+            raise serializers.ValidationError("Updates can be made no more than once every 5 minutes.")
+
         if not UserModel.objects.has_changes(user=instance, validated_data=validated_data):
             raise serializers.ValidationError("No changes have been made.")
 

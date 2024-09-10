@@ -41,7 +41,7 @@ class UserManager(Manager):
     @staticmethod
     def can_update_user(user):
         now = timezone.now()
-        if (now - user.updated_at).total_seconds() > 86400 * 30:
+        if (now - user.updated_at).total_seconds() > 300:
             return True
         else:
             return False

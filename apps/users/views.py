@@ -37,8 +37,7 @@ class UserDestroyView(DestroyAPIView):
 
         user.delete()
 
-        return Response( status=status.HTTP_204_NO_CONTENT)
-
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserBlockView(GenericAPIView):
@@ -143,3 +142,16 @@ class ProfileUpdateView(UpdateAPIView):
 
     def get_object(self):
         return self.request.user.profile
+
+
+class ProfileAddPhotoView(UpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProfileSerializer
+
+    def get_object(self):
+        return self.request.user.profile
+
+    def perform_update(self, serializer):
+        profile = self.get_object()
+        profile.photo.delete()
+        super().perform_update(serializer)
