@@ -2,7 +2,6 @@ FROM python:3.12-alpine
 
 MAINTAINER Some Dev
 
-
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=off \
@@ -22,8 +21,7 @@ RUN mkdir /app
 WORKDIR /app
 
 ENV POETRY_HOME=/usr/local/poetry
-RUN curl -sSL https://install.python-poetry.org | python3 - \
-    && ln -s /usr/local/poetry/bin/poetry /usr/bin/poetry
+RUN curl -sSL https://install.python-poetry.org | python3 - && ln -s /usr/local/poetry/bin/poetry /usr/bin/poetry
 ENV PATH=$POETRY_HOME/bin:$PATH
 
 COPY pyproject.toml poetry.lock /app/

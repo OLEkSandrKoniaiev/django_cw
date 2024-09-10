@@ -42,6 +42,7 @@ class UserDestroyView(DestroyAPIView):
 
 class UserBlockView(GenericAPIView):
     permission_classes = (IsAdminUser,)
+    serializer_class = UserSerializer
 
     def get_queryset(self):
         return UserModel.objects.exclude(pk=self.request.user.pk)
@@ -59,6 +60,7 @@ class UserBlockView(GenericAPIView):
 
 class UserUnBlockView(GenericAPIView):
     permission_classes = (IsAdminUser,)
+    serializer_class = UserSerializer
 
     def get_queryset(self):
         return UserModel.objects.exclude(pk=self.request.user.pk)
@@ -76,6 +78,7 @@ class UserUnBlockView(GenericAPIView):
 
 class UserToAdminView(GenericAPIView):
     permission_classes = (IsSuperUser,)
+    serializer_class = UserSerializer
 
     def get_queryset(self):
         return UserModel.objects.exclude(pk=self.request.user.pk)
@@ -92,6 +95,7 @@ class UserToAdminView(GenericAPIView):
 
 class AdminToUserView(GenericAPIView):
     permission_classes = (IsSuperUser,)
+    serializer_class = UserSerializer
 
     def get_queryset(self):
         return UserModel.objects.exclude(pk=self.request.user.pk)
@@ -108,6 +112,7 @@ class AdminToUserView(GenericAPIView):
 
 class UserToPremiumView(GenericAPIView):
     permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
 
     def patch(self, *args, **kwargs):
         user = self.request.user
@@ -122,6 +127,7 @@ class UserToPremiumView(GenericAPIView):
 
 class PremiumToUserView(GenericAPIView):
     permission_classes = (IsAdminUser,)
+    serializer_class = UserSerializer
 
     def get_queryset(self):
         return UserModel.objects.exclude(pk=self.request.user.pk)
