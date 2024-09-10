@@ -9,6 +9,7 @@ from core.services.file_service import FileService
 from apps.cars.choices.body_choices import BodyChoices
 from apps.cars.choices.currency_choices import CurrencyChoices
 from apps.cars.choices.engine_choices import EngineChoices
+from apps.cars.choices.region_choices import RegionChoices
 from apps.cars.choices.transmission_choices import TransmissionChoices
 from apps.cars.managers import CarManager
 
@@ -60,7 +61,7 @@ class CarProfileModel(BaseModel):
         ordering = ('id',)
 
     city = models.CharField(max_length=60)
-    region = models.CharField(max_length=60)
+    region = models.CharField(max_length=16, choices=RegionChoices.choices)
     description = models.CharField(max_length=255)
     color = models.CharField(max_length=120)
     owner_number = models.IntegerField(validators=(V.MinValueValidator(0), V.MaxValueValidator(100)))
