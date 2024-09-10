@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.db.transaction import atomic
-from django.utils import timezone
+from django.db import transaction
 
 from rest_framework import serializers
 
@@ -16,6 +15,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = ProfileModel
         fields = ('id', 'name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at', 'photo')
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         if not UserModel.objects.can_update_user(user=instance):
             raise serializers.ValidationError("Updates can be made no more than once every 5 minutes.")
@@ -61,7 +61,7 @@ class UserSerializer(serializers.ModelSerializer):
             }
         }
 
-    @atomic
+    @transaction.atomic
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)
         user = super().update(instance, validated_data)
@@ -69,7 +69,7 @@ class UserSerializer(serializers.ModelSerializer):
             ProfileModel.objects.filter(user=user).update(**profile_data)
         return user
 
-    @atomic
+    @transaction.atomic
     def create(self, validated_data: dict):
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)

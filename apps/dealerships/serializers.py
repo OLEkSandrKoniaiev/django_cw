@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.db.transaction import atomic
 
 from rest_framework import serializers
@@ -8,10 +9,22 @@ from apps.dealerships.models import DealershipModel
 class DealershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = DealershipModel
-        fields = ('id', 'name', 'address', 'contact_phone', 'website', 'description')
-        # read_only_fields = ('admin_id',)
+        fields = (
+            'id',
+            'name',
+            'address',
+            'phone',
+            'website',
+            'description',
+            'created_at',
+            'updated_at',
+            'user'
+        )
+        read_only_fields = ('created_at', 'updated_at', 'user')
 
-    @atomic
+    @transaction.atomic
     def create(self, validated_data):
-        user = self.context['request'].user
-        return DealershipModel.objects.create(admin_id=user, **validated_data)
+        request = self.context.get('request', None)
+        validated_data['user'] = request.user
+        dealership = DealershipModel.objects.create(**validated_data)
+        return dealership
