@@ -4,7 +4,6 @@ from django.db import models
 
 from core.enums.regex_enum import RegexEnum
 from core.models import BaseModel
-from core.services.file_service import FileService
 
 from apps.users.managers import UserManager
 
@@ -34,4 +33,3 @@ class ProfileModel(BaseModel):
     city = models.CharField(max_length=50)
     phone = models.CharField(max_length=13, validators=[V.RegexValidator(*RegexEnum.PHONE.value)])
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='profile')
-    photo = models.ImageField(upload_to=FileService.upload_user_photo, null=True, blank=True)

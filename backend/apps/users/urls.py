@@ -3,7 +3,6 @@ from django.urls import path
 from apps.users.views import (
     AdminToUserView,
     PremiumToUserView,
-    UserAddPhotoView,
     UserBlockView,
     UserCreateView,
     UserDestroyView,
@@ -21,7 +20,6 @@ urlpatterns = [
     path('/<int:pk>', UserRetrieveView.as_view(), name='user-retrieve'),
     path('/<int:pk>/update', UserUpdateView.as_view(), name='user-update'),
     path('/destroy', UserDestroyView.as_view(), name='user-destroy'),
-    path('/<int:pk>/photo', UserAddPhotoView.as_view(), name='user-add-photo'),
     path('/<int:pk>/block', UserBlockView.as_view(), name='user-block'),
     path('/<int:pk>/unblock', UserUnBlockView.as_view(), name='user-unblock'),
     path('/<int:pk>/admin', UserToAdminView.as_view(), name='user-to-admin'),

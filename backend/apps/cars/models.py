@@ -68,7 +68,6 @@ class CarModel(BaseModel):
     model = models.ForeignKey(ModelModel, on_delete=models.CASCADE, related_name='cars')
     year = models.IntegerField(validators=(V.MinValueValidator(1900), V.MaxValueValidator(datetime.now().year)))
     price = models.ForeignKey(PriceModel, on_delete=models.SET_NULL, related_name='cars', null=True)
-    currency = models.CharField(max_length=3, choices=CurrencyChoices.choices)
     is_new = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     edit_attempts = models.IntegerField(default=2)

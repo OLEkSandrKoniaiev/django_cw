@@ -84,7 +84,6 @@ class CarSerializer(serializers.ModelSerializer):
             'model',
             'year',
             'price',
-            'currency',
             'is_new',
             'is_active',
             'edit_attempts',

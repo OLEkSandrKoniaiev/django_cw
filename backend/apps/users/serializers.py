@@ -13,7 +13,7 @@ UserModel = get_user_model()
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileModel
-        fields = ('id', 'name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at', 'photo')
+        fields = ('id', 'name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at')
 
 
 class UserSerializer(serializers.ModelSerializer):

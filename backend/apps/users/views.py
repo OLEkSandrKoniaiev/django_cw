@@ -169,20 +169,3 @@ class PremiumToUserView(GenericAPIView):
             user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data, status.HTTP_200_OK)
-
-
-class UserAddPhotoView(UpdateAPIView):
-    permission_classes = (IsAuthenticated,)
-    queryset = UserModel.objects.all()
-    serializer_class = ProfileSerializer
-
-    def patch(self, request, *args, **kwargs):
-        profile = self.get_object().profile
-        serializer = self.get_serializer(profile, data=request.data, partial=True)
-
-        serializer.is_valid(raise_exception=True)
-        if profile.photo:
-            profile.photo.delete(save=False)
-
-        serializer.save()
-        return Response({'detail': 'Photo updated successfully', 'data': serializer.data})
