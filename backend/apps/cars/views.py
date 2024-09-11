@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.permissions.is_car_owner import IsOwner
+from core.permissions.is_car_owner_and_premium import IsOwnerAndPremium
 from core.permissions.is_car_owner_or_admin import IsOwnerOrAdmin
-from core.permissions.is_premium import IsPremium
 
 from apps.cars.filter import CarFilter
 from apps.cars.models import BrandModel, CarModel, ModelModel, ViewModel
@@ -148,7 +148,7 @@ class CarAddPhotoView(UpdateAPIView):
 
 
 class ViewCountView(APIView):
-    permission_classes = (IsPremium,)
+    permission_classes = (IsOwnerAndPremium,)
 
     def get(self, request, car_id, period):
         car = CarModel.objects.get(id=car_id)
