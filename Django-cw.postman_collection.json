@@ -1,0 +1,1396 @@
+{
+	"info": {
+		"_postman_id": "3ba6ff08-be8e-44cf-9014-24e35c8e1224",
+		"name": "Django-cw",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32616252"
+	},
+	"item": [
+		{
+			"name": "cars",
+			"item": [
+				{
+					"name": "brands",
+					"item": [
+						{
+							"name": "lists brands",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/cars/brands",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"brands"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "retrieve brand",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/cars/brands/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"brands",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create brand",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"BMW\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/cars/brands/create",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"brands",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update brand",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Renault\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/cars/brands/1/update",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"brands",
+										"1",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "destroy brand",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/cars/brands/3/destroy",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"brands",
+										"3",
+										"destroy"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "models",
+					"item": [
+						{
+							"name": "lists models",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/cars/models",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"models"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "retrieve model",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/cars/models/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"models",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create model",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Classic\",\r\n    \"brand\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/cars/models/create",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"models",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update brand",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Renault\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/cars/brands/1/update",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"brands",
+										"1",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "destroy brand",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/cars/brands/1/destroy",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"brands",
+										"1",
+										"destroy"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "views",
+					"item": [
+						{
+							"name": "get statistic",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/cars/1/views/day",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"1",
+										"views",
+										"day"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "price",
+					"item": [
+						{
+							"name": "average price",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/cars/1/average/Lviv",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cars",
+										"1",
+										"average",
+										"Lviv"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "lists cars",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars"
+							],
+							"query": [
+								{
+									"key": "brand",
+									"value": "BM",
+									"disabled": true
+								},
+								{
+									"key": "model",
+									"value": "X",
+									"disabled": true
+								},
+								{
+									"key": "city",
+									"value": "iv",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "The",
+									"disabled": true
+								},
+								{
+									"key": "year_gte",
+									"value": "2016",
+									"disabled": true
+								},
+								{
+									"key": "year_lte",
+									"value": "2016",
+									"disabled": true
+								},
+								{
+									"key": "price_gte",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "price_lte",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "mileage_gte",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "mileage_lte",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "engine_capacity_gte",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "engine_capacity_lte",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "currency",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "body",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "engine",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "transmission",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "is_new",
+									"value": "False",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "year",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "retrieve car",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": {\r\n        \"currency\": \"USD\",\r\n        \"price\": 9000\r\n    },\r\n    \"currency\": \"USD\",\r\n    \"year\": 2010,\r\n    \"model\": 3,\r\n    \"car_profile\": {\r\n        \"city\": \"Stryi\",\r\n        \"region\": \"Lviv\",\r\n        \"description\": \"The coolest car in the village. Badword - fuck. Update for car activation\",\r\n        \"color\": \"black\",\r\n        \"owner_number\": 2,\r\n        \"mileage\": 24000,\r\n        \"engine\": \"Petrol\",\r\n        \"engine_cappasity\": 23,\r\n        \"transmission\": \"Manual\",\r\n        \"body\": \"Coupe\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/cars/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"car_profile\": {\r\n        \"description\": \"lviv\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/cars/1/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"1",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "destroy car",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/cars/1/destroy",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"1",
+								"destroy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add car photo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/oleks/OneDrive/Зображення/Знімки екрана/cars.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/cars/1/photo",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"cars",
+								"1",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "lists users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "retrieve user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user.d@gmail.com\",\r\n    \"password\": \"Simple123.\",\r\n    \"profile\": {\r\n        \"name\": \"Vasyl\",\r\n        \"surname\": \"Borshch\",\r\n        \"age\": 25,\r\n        \"city\": \"Lviv\",\r\n        \"phone\": \"+380665556655\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"profile\": {\r\n        \"name\": \"Oleksandr\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/1/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "destroy user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"Simple123.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/destroy",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"destroy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "block user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/1/block",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"block"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unblock user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/1/un_block",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"un_block"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admins user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/1/admins",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user to premium",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/premium",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"premium"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "premium to user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/1/remove-premium",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"remove-premium"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"access\", res.access);\r",
+									"pm.environment.set(\"refresh\", res.refresh);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user.d@gmail.com\",\r\n    \"password\": \"Simple123.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"access\", res.access);\r",
+									"pm.environment.set(\"refresh\", res.refresh);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "refresh",
+									"value": "{{refresh}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/auth/refresh",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activation",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/auth/activate/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"activate",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWN0aXZhdGUiLCJleHAiOjE3MjYwMTE4NTAsImlhdCI6MTcyNjAwODI1MCwianRpIjoiMDc5YjVlMjEwYWFmNGFlMmEwYzcxMmM0YjQ1MWEwNjIiLCJ1c2VyX2lkIjoxfQ.JUze0dVyY-cLa7fmE1mRVM-geKXgP58CekLEEf9PlDw"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recovery letter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user.d@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/recovery-password",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"recovery-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recovering",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"Simple123.1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/recovery-password/:token",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"recovery-password",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVjb3ZlcnkiLCJleHAiOjE3MjU3MTIyMjksImlhdCI6MTcyNTcxMTYyOSwianRpIjoiMjgwOWZiN2M2MmUxNGNkZDlmNTA2NmZmZmE5MjViZjgiLCJ1c2VyX2lkIjo0fQ.fkKSPmoWK7qbK_1ROOb7cSIvUoIrDzkEJqBuLu7jI4s"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change email request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"Simple123.1\",\r\n    \"new_email\": \"oleksandrkoniaiev.r@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/change-email",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"change-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"new_email\": \"oleksandrkoniaiev.r@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/auth/change-email/:token",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"change-email",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYXBwcm92ZSIsImV4cCI6MTcyNTgyNDU5MSwiaWF0IjoxNzI1ODIzOTkxLCJqdGkiOiJlMzNkMWVlOTI0MWM0ZDdkYTVlMDdjMTJhOWZmNzYzYiIsInVzZXJfaWQiOjR9.wFSdVCT0wEDPXi_xpA4Skxq6JvlkocN-yTXoa4HuN3w"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get soket token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const res = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"socket_token\", res.token);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/auth/token",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"auth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "dealerships",
+			"item": [
+				{
+					"name": "lists dealerships",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/dealerships",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dealerships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "retrieve dealership",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/dealerships/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dealerships",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create dealership",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Audi Lviv Salon\",\r\n    \"address\": \"This field is required.\",\r\n    \"phone\": \"+380665556655\",\r\n    \"website\": \"This field is required.\",\r\n    \"description\": \"This field is required.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/dealerships/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dealerships",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update dealership",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/dealerships/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dealerships",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "destroy dealership",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/dealerships/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dealerships",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
