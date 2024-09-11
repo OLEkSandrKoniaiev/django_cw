@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from core.services.email_service import EmailService
 
-from apps.cars.models import BrandModel, CarModel, CarProfileModel, ModelModel
+from apps.cars.models import BrandModel, CarModel, CarProfileModel, ModelModel, PriceModel
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -49,9 +49,33 @@ class CarProfileSerializer(serializers.ModelSerializer):
         )
 
 
+class PriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PriceModel
+        fields = (
+            'id',
+            'initial_currency',
+            'initial_price',
+            'currency',
+            'price',
+            'price_in_usd',
+            'price_in_uan',
+            'price_in_eur'
+        )
+        read_only_fields = (
+            'id',
+            'initial_currency',
+            'initial_price',
+            'price_in_usd',
+            'price_in_uan',
+            'price_in_eur'
+        )
+
+
 class CarSerializer(serializers.ModelSerializer):
     car_profile = CarProfileSerializer()
     model = serializers.PrimaryKeyRelatedField(queryset=ModelModel.objects.all())
+    price = PriceSerializer()
 
     class Meta:
         model = CarModel
@@ -84,10 +108,17 @@ class CarSerializer(serializers.ModelSerializer):
         validated_data['model'] = model
 
         profile_data = validated_data.pop('car_profile')
+        price_data = validated_data.pop('price')
+        price_data['initial_price'] = price_data['price']
+        price_data['initial_currency'] = price_data['currency']
+
         request = self.context.get('request', None)
         validated_data['user'] = request.user
-        car = CarModel.objects.create_car(**validated_data)
+
+        price = PriceModel.objects.create(**price_data)
+        car = CarModel.objects.create_car(price=price, **validated_data)
         CarProfileModel.objects.create(car=car, **profile_data)
+
         return car
 
     @transaction.atomic
@@ -116,6 +147,13 @@ class CarSerializer(serializers.ModelSerializer):
             for field, value in profile_data.items():
                 setattr(car_profile, field, value)
             car_profile.save()
+
+        price_data = validated_data.pop('price', None)
+        if price_data:
+            price_instance = instance.price
+            for field, value in price_data.items():
+                setattr(price_instance, field, value)
+            price_instance.save()
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)

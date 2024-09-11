@@ -1,6 +1,7 @@
 from django.urls import path
 
 from apps.cars.views import (
+    AveragePriceView,
     BrandCreateView,
     BrandDestroyView,
     BrandListView,
@@ -12,6 +13,7 @@ from apps.cars.views import (
     CarListView,
     CarRetrieveView,
     CarUpdateView,
+    CurrencyListView,
     ModelCreateView,
     ModelDestroyView,
     ModelListView,
@@ -37,5 +39,7 @@ urlpatterns = [
     path('/models/<int:pk>', ModelRetrieveView.as_view(), name='model-retrieve'),
     path('/models/<int:pk>/update', ModelUpdateView.as_view(), name='model-update'),
     path('/models/<int:pk>/destroy', ModelDestroyView.as_view(), name='model-destroy'),
+    path('/currency', CurrencyListView.as_view(), name='currency-list'),
     path('/<int:car_id>/views/<str:period>', ViewCountView.as_view(), name='view-count'),
+    path('/<int:model_id>/average/<str:region>', AveragePriceView.as_view(), name='average-price'),
 ]

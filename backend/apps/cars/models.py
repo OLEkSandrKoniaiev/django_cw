@@ -34,6 +34,32 @@ class ModelModel(BaseModel):
     brand = models.ForeignKey(BrandModel, on_delete=models.CASCADE, related_name='models')
 
 
+class CurrencyModel(models.Model):
+    class Meta:
+        db_table = 'currencies'
+        ordering = ('id',)
+
+    name = models.CharField(unique=True, max_length=3)
+    byu = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    sell = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+
+
+class PriceModel(models.Model):
+    class Meta:
+        db_table = 'prices'
+        ordering = ('id',)
+
+    initial_currency = models.CharField(max_length=3, choices=CurrencyChoices.choices)
+    initial_price = models.DecimalField(max_digits=8, decimal_places=2,
+                                        validators=(V.MinValueValidator(100), V.MaxValueValidator(100_000_000)))
+    currency = models.CharField(max_length=3, choices=CurrencyChoices.choices)
+    price = models.DecimalField(max_digits=8, decimal_places=2,
+                                validators=(V.MinValueValidator(100), V.MaxValueValidator(100_000_000)))
+    price_in_usd = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    price_in_uan = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    price_in_eur = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+
+
 class CarModel(BaseModel):
     class Meta:
         db_table = 'cars'
@@ -41,7 +67,7 @@ class CarModel(BaseModel):
 
     model = models.ForeignKey(ModelModel, on_delete=models.CASCADE, related_name='cars')
     year = models.IntegerField(validators=(V.MinValueValidator(1900), V.MaxValueValidator(datetime.now().year)))
-    price = models.IntegerField(validators=(V.MinValueValidator(100), V.MaxValueValidator(100_000_000)))
+    price = models.ForeignKey(PriceModel, on_delete=models.SET_NULL, related_name='cars', null=True)
     currency = models.CharField(max_length=3, choices=CurrencyChoices.choices)
     is_new = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)

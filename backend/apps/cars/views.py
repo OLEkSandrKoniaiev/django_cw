@@ -1,5 +1,7 @@
 from datetime import timedelta
 
+from django.db.models import Avg
+from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 
 from rest_framework.generics import (
@@ -17,9 +19,10 @@ from rest_framework.views import APIView
 from core.permissions.is_car_owner import IsOwner
 from core.permissions.is_car_owner_and_premium import IsOwnerAndPremium
 from core.permissions.is_car_owner_or_admin import IsOwnerOrAdmin
+from core.permissions.is_premium import IsPremium
 
 from apps.cars.filter import CarFilter
-from apps.cars.models import BrandModel, CarModel, ModelModel, ViewModel
+from apps.cars.models import BrandModel, CarModel, CurrencyModel, ModelModel, PriceModel, ViewModel
 from apps.cars.serializers import BrandSerializer, CarProfileSerializer, CarSerializer, ModelSerializer
 
 
@@ -154,6 +157,14 @@ class CarAddPhotoView(UpdateAPIView):
         return Response({'detail': 'Photo updated successfully', 'data': serializer.data})
 
 
+class CurrencyListView(ListAPIView):
+    queryset = CurrencyModel.objects.all()
+    permission_classes = (AllowAny,)
+
+    def get_serializer_class(self):
+        pass
+
+
 class ViewCountView(APIView):
     permission_classes = (IsOwnerAndPremium,)
 
@@ -182,4 +193,28 @@ class ViewCountView(APIView):
             'car_id': car_id,
             'period': period,
             'view_count': view_count
+        })
+
+
+class AveragePriceView(APIView):
+    permission_classes = (IsPremium,)
+
+    def get(self, request, model_id, region):
+        car_model = get_object_or_404(ModelModel, id=model_id)
+
+        price_queryset = CarModel.objects.filter(model_id=car_model)
+        print(price_queryset)
+
+        if region != 'Ukraine':
+            price_queryset = price_queryset.filter(car_profile__region=region)
+
+        average_price = price_queryset.aggregate(average_price=Avg('price__price'))['average_price']
+
+        if average_price is None:
+            return Response({'error': 'No data found for the specified model or region'}, status=404)
+
+        return Response({
+            'model_id': model_id,
+            'region': region if region else 'all',
+            'average_price': average_price
         })
