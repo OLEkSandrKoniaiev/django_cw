@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from core.exceptions.jwt_exception import JwtException
 from core.services.email_service import EmailService
-from core.services.jwt_service import ActivateToken, ApprovalToken, JWTService, RecoveryToken
+from core.services.jwt_service import ActivateToken, ApprovalToken, JWTService, RecoveryToken, SocketToken
 
 from apps.auth.serializers import EmailSerializer, NewEmailSerializer, PasswordSerializer
 from apps.users.serializers import UserSerializer
@@ -109,3 +109,11 @@ class ChangeEmailView(GenericAPIView):
         user.save()
 
         return Response({'detail': 'Email was successfully changed'}, status=status.HTTP_200_OK)
+
+
+class SocketView(GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, *args, **kwargs):
+        token = JWTService.create_token(self.request.user, SocketToken)
+        return Response({'token': str(token)}, status=status.HTTP_200_OK)

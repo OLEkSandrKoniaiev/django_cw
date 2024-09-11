@@ -8,6 +8,7 @@ from apps.auth.views import (
     ChangeEmailView,
     RecoverPasswordView,
     RecoveryPasswordRequestView,
+    SocketView,
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path('/recovery-password/<str:token>', RecoverPasswordView.as_view()),
     path('/change-email', ChangeEmailRequestView.as_view()),
     path('/change-email/<str:token>', ChangeEmailView.as_view()),
+    path('/token', SocketView.as_view()),
 ]

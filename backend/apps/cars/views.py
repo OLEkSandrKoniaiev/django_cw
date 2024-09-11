@@ -2,7 +2,14 @@ from datetime import timedelta
 
 from django.utils.timezone import now
 
-from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+    get_object_or_404,
+)
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -151,7 +158,7 @@ class ViewCountView(APIView):
     permission_classes = (IsOwnerAndPremium,)
 
     def get(self, request, car_id, period):
-        car = CarModel.objects.get(id=car_id)
+        car = get_object_or_404(CarModel, id=car_id)
 
         self.check_object_permissions(request, car)
 
