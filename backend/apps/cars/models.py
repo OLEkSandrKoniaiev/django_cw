@@ -72,3 +72,12 @@ class CarProfileModel(BaseModel):
     body = models.CharField(max_length=9, choices=BodyChoices.choices)
     car = models.OneToOneField(CarModel, on_delete=models.CASCADE, related_name='car_profile')
     photo = models.ImageField(upload_to=FileService.upload_car_photo, blank=True, null=True)
+
+
+class ViewModel(models.Model):
+    class Meta:
+        db_table = 'views'
+        ordering = ('id',)
+
+    car = models.ForeignKey(CarModel, on_delete=models.CASCADE, related_name='views')
+    created_at = models.DateTimeField(auto_now_add=True)

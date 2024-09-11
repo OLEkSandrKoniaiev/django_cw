@@ -1,12 +1,18 @@
+from datetime import timedelta
+
+from django.utils.timezone import now
+
 from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from core.permissions.is_car_owner import IsOwner
 from core.permissions.is_car_owner_or_admin import IsOwnerOrAdmin
+from core.permissions.is_premium import IsPremium
 
 from apps.cars.filter import CarFilter
-from apps.cars.models import BrandModel, CarModel, ModelModel
+from apps.cars.models import BrandModel, CarModel, ModelModel, ViewModel
 from apps.cars.serializers import BrandSerializer, CarProfileSerializer, CarSerializer, ModelSerializer
 
 
@@ -93,6 +99,12 @@ class CarRetrieveView(RetrieveAPIView):
     queryset = CarModel.objects.all()
     permission_classes = (AllowAny,)
 
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        car = self.get_object()
+        ViewModel.objects.create(car=car)
+        return response
+
 
 class CarUpdateView(UpdateAPIView):
     serializer_class = CarSerializer
@@ -133,3 +145,30 @@ class CarAddPhotoView(UpdateAPIView):
 
         serializer.save()
         return Response({'detail': 'Photo updated successfully', 'data': serializer.data})
+
+
+class ViewCountView(APIView):
+    permission_classes = (IsPremium,)
+
+    def get(self, request, car_id, period):
+        car = CarModel.objects.get(id=car_id)
+
+        if period == 'day':
+            start_date = now() - timedelta(days=1)
+            view_count = ViewModel.objects.filter(car=car, created_at__gte=start_date).count()
+        elif period == 'week':
+            start_date = now() - timedelta(weeks=1)
+            view_count = ViewModel.objects.filter(car=car, created_at__gte=start_date).count()
+        elif period == 'month':
+            start_date = now() - timedelta(days=30)
+            view_count = ViewModel.objects.filter(car=car, created_at__gte=start_date).count()
+        elif period == 'all_time':
+            view_count = ViewModel.objects.filter(car=car).count()
+        else:
+            return Response({'error': 'Invalid period'}, status=400)
+
+        return Response({
+            'car_id': car_id,
+            'period': period,
+            'view_count': view_count
+        })

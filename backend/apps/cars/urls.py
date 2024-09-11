@@ -17,6 +17,7 @@ from apps.cars.views import (
     ModelListView,
     ModelRetrieveView,
     ModelUpdateView,
+    ViewCountView,
 )
 
 urlpatterns = [
@@ -36,4 +37,5 @@ urlpatterns = [
     path('/models/<int:pk>', ModelRetrieveView.as_view(), name='model-retrieve'),
     path('/models/<int:pk>/update', ModelUpdateView.as_view(), name='model-update'),
     path('/models/<int:pk>/destroy', ModelDestroyView.as_view(), name='model-destroy'),
+    path('/<int:car_id>/views/<str:period>', ViewCountView.as_view(), name='view_count'),
 ]

@@ -15,16 +15,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = ProfileModel
         fields = ('id', 'name', 'surname', 'age', 'city', 'phone', 'created_at', 'updated_at', 'photo')
 
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        if not UserModel.objects.can_update_user(user=instance):
-            raise serializers.ValidationError("Updates can be made no more than once every 5 minutes.")
-
-        if not UserModel.objects.has_changes(user=instance, validated_data=validated_data):
-            raise serializers.ValidationError("No changes have been made.")
-
-        return super().update(instance, validated_data)
-
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
@@ -53,7 +43,8 @@ class UserSerializer(serializers.ModelSerializer):
             'is_superuser',
             'last_login',
             'created_at',
-            'updated_at'
+            'updated_at',
+            'dealership_id'
         )
         extra_kwargs = {
             'password': {
@@ -63,6 +54,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
+        if not UserModel.objects.can_update_user(user=instance):
+            raise serializers.ValidationError("Updates can be made no more than once every 5 minutes.")
+
+        if not UserModel.objects.has_changes(user=instance, validated_data=validated_data):
+            raise serializers.ValidationError("No changes have been made.")
+
         profile_data = validated_data.pop('profile', None)
         user = super().update(instance, validated_data)
         if profile_data:
