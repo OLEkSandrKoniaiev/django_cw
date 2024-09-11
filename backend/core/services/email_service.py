@@ -26,7 +26,7 @@ class EmailService:
     @classmethod
     def register_email(cls, user: User):
         token = JWTService.create_token(user, ActivateToken)
-        url = f'http://localhost:3000/activate/{token}'
+        url = f'api/activate/{token}'
         cls.__send_email.delay(
             user.email,
             template_name='register.html',
@@ -37,13 +37,13 @@ class EmailService:
     @classmethod
     def recovery_email(cls, user: User):
         token = JWTService.create_token(user, RecoveryToken)
-        url = f'http://localhost:3000/recovery/{token}'
+        url = f'api/auth/recovery-password/{token}'
         cls.__send_email.delay(user.email, 'recovery.html', {'url': url}, 'Recovery password')
 
     @classmethod
     def approve_email_change(cls, user: User, new_email: str):
         token = JWTService.create_token(user, ApprovalToken)
-        url = f'http://localhost:3000/approve/{token}'
+        url = f'api/approve/{token}'
         cls.__send_email.delay(new_email, 'approve.html', {'url': url}, 'Approval password')
 
     @classmethod
@@ -60,3 +60,8 @@ class EmailService:
             {'user_id': f'{user_id}', 'car_id': f'{car_id}'},
             'Badwords'
         )
+
+    @classmethod
+    def chat_invite_email(cls, user: User, user_id: int):
+        pass
+
