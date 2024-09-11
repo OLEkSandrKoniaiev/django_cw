@@ -153,19 +153,23 @@ class ViewCountView(APIView):
     def get(self, request, car_id, period):
         car = CarModel.objects.get(id=car_id)
 
+        self.check_object_permissions(request, car)
+
         if period == 'day':
             start_date = now() - timedelta(days=1)
-            view_count = ViewModel.objects.filter(car=car, created_at__gte=start_date).count()
         elif period == 'week':
             start_date = now() - timedelta(weeks=1)
-            view_count = ViewModel.objects.filter(car=car, created_at__gte=start_date).count()
         elif period == 'month':
             start_date = now() - timedelta(days=30)
-            view_count = ViewModel.objects.filter(car=car, created_at__gte=start_date).count()
         elif period == 'all_time':
-            view_count = ViewModel.objects.filter(car=car).count()
+            start_date = None
         else:
             return Response({'error': 'Invalid period'}, status=400)
+
+        if start_date:
+            view_count = ViewModel.objects.filter(car=car, created_at__gte=start_date).count()
+        else:
+            view_count = ViewModel.objects.filter(car=car).count()
 
         return Response({
             'car_id': car_id,

@@ -17,7 +17,6 @@ from apps.cars.views import (
     ModelListView,
     ModelRetrieveView,
     ModelUpdateView,
-    ViewAllTimeCountView,
     ViewCountView,
 )
 
