@@ -14,6 +14,6 @@ app.autodiscover_tasks(['core.services'])
 app.conf.beat_schedule = {
     "update_currency": {
         "task": "core.services.currency_service.update_currency",
-        "schedule": crontab(minute="30", hour="20"),
+        "schedule": crontab(minute="30", hour="*"),
     }
 }

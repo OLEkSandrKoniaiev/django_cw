@@ -2,9 +2,16 @@ from django.db import transaction
 
 from rest_framework import serializers
 
+from core.models import CurrencyModel, PriceModel
 from core.services.email_service import EmailService
 
-from apps.cars.models import BrandModel, CarModel, CarProfileModel, ModelModel, PriceModel
+from apps.cars.models import BrandModel, CarModel, CarProfileModel, ModelModel
+
+
+class CurrencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CurrencyModel
+        fields = ('id', 'name', 'buy', 'sell')
 
 
 class BrandSerializer(serializers.ModelSerializer):

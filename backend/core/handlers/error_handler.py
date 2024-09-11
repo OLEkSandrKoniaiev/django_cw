@@ -5,7 +5,8 @@ from rest_framework.views import exception_handler
 
 def error_handler(exc: Exception, context: dict) -> Response:
     handlers = {
-        'JwtException': _jwt_validation_error_handler
+        'JwtException': _jwt_validation_error_handler,
+        'CurrencyException': _currency_fetch_error_handler,
     }
 
     response = exception_handler(exc, context)
@@ -19,3 +20,7 @@ def error_handler(exc: Exception, context: dict) -> Response:
 
 def _jwt_validation_error_handler(exc: Exception, context: dict) -> Response:
     return Response({'detail': 'Token is invalid or expired'}, status=status.HTTP_403_FORBIDDEN)
+
+
+def _currency_fetch_error_handler(exc: Exception, context: dict) -> Response:
+    return Response({'detail': 'Failed to fetch exchange rates.'}, status=status.HTTP_400_BAD_REQUEST)

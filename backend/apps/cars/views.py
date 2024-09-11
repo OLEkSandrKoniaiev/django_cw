@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from django.utils.timezone import now
 
 from rest_framework.generics import (
@@ -16,18 +17,26 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from drf_yasg.utils import swagger_auto_schema
+
+from core.models import CurrencyModel
 from core.permissions.is_car_owner import IsOwner
 from core.permissions.is_car_owner_and_premium import IsOwnerAndPremium
 from core.permissions.is_car_owner_or_admin import IsOwnerOrAdmin
 from core.permissions.is_premium import IsPremium
 
 from apps.cars.filter import CarFilter
-from apps.cars.models import BrandModel, CarModel, CurrencyModel, ModelModel, PriceModel, ViewModel
+from apps.cars.models import BrandModel, CarModel, ModelModel, ViewModel
 from apps.cars.serializers import BrandSerializer, CarProfileSerializer, CarSerializer, ModelSerializer
 
 
 # brand views
+@method_decorator(name='get', decorator=swagger_auto_schema(security=[], ))
 class BrandListView(ListAPIView):
+    """
+    get:
+    Returns a list of all available car brands. Open to any user, no authentication required.
+    """
     serializer_class = BrandSerializer
     queryset = BrandModel.objects.all()
     permission_classes = (AllowAny,)
@@ -35,31 +44,53 @@ class BrandListView(ListAPIView):
 
 
 class BrandCreateView(CreateAPIView):
+    """
+    post:
+    Allows an admin to create a new car brand. Requires admin privileges.
+    """
     serializer_class = BrandSerializer
     queryset = BrandModel.objects.all()
     permission_classes = (IsAdminUser,)
 
 
+@method_decorator(name='get', decorator=swagger_auto_schema(security=[], ))
 class BrandRetrieveView(RetrieveAPIView):
+    """
+    get:
+    Retrieves details of a specific car brand by its ID. Open to any user, no authentication required.
+    """
     serializer_class = BrandSerializer
     queryset = BrandModel.objects.all()
     permission_classes = (AllowAny,)
 
 
 class BrandUpdateView(UpdateAPIView):
+    """
+    patch:
+    Allows an admin to update a car brand's information. Requires admin privileges.
+    """
     serializer_class = BrandSerializer
     queryset = BrandModel.objects.all()
     permission_classes = (IsAdminUser,)
 
 
 class BrandDestroyView(DestroyAPIView):
+    """
+    delete:
+    Allows an admin to delete a car brand. Requires admin privileges.
+    """
     serializer_class = BrandSerializer
     queryset = BrandModel.objects.all()
     permission_classes = (IsAdminUser,)
 
 
 # model views
+@method_decorator(name='get', decorator=swagger_auto_schema(security=[], ))
 class ModelListView(ListAPIView):
+    """
+    get:
+    Returns a list of all available car models. Open to any user, no authentication required.
+    """
     serializer_class = ModelSerializer
     queryset = ModelModel.objects.all()
     permission_classes = (AllowAny,)
@@ -67,31 +98,53 @@ class ModelListView(ListAPIView):
 
 
 class ModelCreateView(CreateAPIView):
+    """
+    post:
+    Allows an admin to create a new car model. Requires admin privileges.
+    """
     serializer_class = ModelSerializer
     queryset = ModelModel.objects.all()
     permission_classes = (IsAdminUser,)
 
 
+@method_decorator(name='get', decorator=swagger_auto_schema(security=[], ))
 class ModelRetrieveView(RetrieveAPIView):
+    """
+    get:
+    Retrieves details of a specific car model by its ID. Open to any user, no authentication required.
+    """
     serializer_class = ModelSerializer
     queryset = ModelModel.objects.all()
     permission_classes = (AllowAny,)
 
 
 class ModelUpdateView(UpdateAPIView):
+    """
+    patch:
+    Allows an admin to update a car model's information. Requires admin privileges.
+    """
     serializer_class = ModelSerializer
     queryset = ModelModel.objects.all()
     permission_classes = (IsAdminUser,)
 
 
 class ModelDestroyView(DestroyAPIView):
+    """
+    delete:
+    Allows an admin to delete a car model. Requires admin privileges.
+    """
     serializer_class = ModelSerializer
     queryset = ModelModel.objects.all()
     permission_classes = (IsAdminUser,)
 
 
 # car views
+@method_decorator(name='get', decorator=swagger_auto_schema(security=[], ))
 class CarListView(ListAPIView):
+    """
+    get:
+    Returns a list of all available cars, with optional filters. Open to any user, no authentication required.
+    """
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
     permission_classes = (AllowAny,)
@@ -99,12 +152,21 @@ class CarListView(ListAPIView):
 
 
 class CarCreateView(CreateAPIView):
+    """
+    post:
+    Allows authenticated users to create a new car listing. Requires user authentication.
+    """
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
     permission_classes = (IsAuthenticated,)
 
 
+@method_decorator(name='get', decorator=swagger_auto_schema(security=[], ))
 class CarRetrieveView(RetrieveAPIView):
+    """
+    get:
+    Retrieves details of a specific car by its ID and logs a view for that car. Open to any user, no authentication required.
+    """
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
     permission_classes = (AllowAny,)
@@ -117,6 +179,10 @@ class CarRetrieveView(RetrieveAPIView):
 
 
 class CarUpdateView(UpdateAPIView):
+    """
+    patch:
+    Allows the owner of a car listing to partially update the car's details. Requires ownership of the listing.
+    """
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
     permission_classes = (IsOwner,)
@@ -135,12 +201,20 @@ class CarUpdateView(UpdateAPIView):
 
 
 class CarDestroyView(DestroyAPIView):
+    """
+    delete:
+    Allows the owner or an admin to delete a car listing. Requires either ownership or admin privileges.
+    """
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
     permission_classes = (IsOwnerOrAdmin,)
 
 
 class CarAddPhotoView(UpdateAPIView):
+    """
+    patch:
+    Allows the owner or an admin to update the car's profile photo. If a previous photo exists, it is replaced.
+    """
     serializer_class = CarProfileSerializer
     queryset = CarModel.objects.all()
     permission_classes = (IsOwnerOrAdmin,)
@@ -157,7 +231,12 @@ class CarAddPhotoView(UpdateAPIView):
         return Response({'detail': 'Photo updated successfully', 'data': serializer.data})
 
 
+@method_decorator(name='get', decorator=swagger_auto_schema(security=[], ))
 class CurrencyListView(ListAPIView):
+    """
+    get:
+    Returns a list of all available currencies. Open to any user, no authentication required.
+    """
     queryset = CurrencyModel.objects.all()
     permission_classes = (AllowAny,)
 
@@ -166,6 +245,11 @@ class CurrencyListView(ListAPIView):
 
 
 class ViewCountView(APIView):
+    """
+    get:
+    Returns the number of views for a specific car within a given time period (day, week, month, or all time).
+    Requires the user to be the owner and have a premium account.
+    """
     permission_classes = (IsOwnerAndPremium,)
 
     def get(self, request, car_id, period):
@@ -197,6 +281,11 @@ class ViewCountView(APIView):
 
 
 class AveragePriceView(APIView):
+    """
+    get:
+    Calculates and returns the average price of cars of a specific model, optionally filtered by region.
+    Requires the user to have a premium account.
+    """
     permission_classes = (IsPremium,)
 
     def get(self, request, model_id, region):
@@ -215,6 +304,6 @@ class AveragePriceView(APIView):
 
         return Response({
             'model_id': model_id,
-            'region': region if region else 'all',
+            'region': f"{region} region" if region else 'Ukraine',
             'average_price': average_price
         })

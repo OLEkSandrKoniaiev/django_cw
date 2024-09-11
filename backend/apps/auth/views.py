@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.utils.decorators import method_decorator
 
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+
+from drf_yasg.utils import swagger_auto_schema
 
 from core.exceptions.jwt_exception import JwtException
 from core.services.email_service import EmailService
@@ -15,7 +18,14 @@ from apps.users.serializers import UserSerializer
 UserModel = get_user_model()
 
 
+@method_decorator(name='patch', decorator=swagger_auto_schema(security=[],))
 class ActiveUserView(GenericAPIView):
+    """
+    patch:
+    This view is used to activate a user's account by verifying a token provided in the URL.
+    Once the token is validated, the user is marked as active, and their updated information is returned in the response.
+    Accessible to any user, as it doesn't require authentication.
+    """
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
 
@@ -28,7 +38,13 @@ class ActiveUserView(GenericAPIView):
         return Response(serializer.data, status.HTTP_200_OK)
 
 
+@method_decorator(name='post', decorator=swagger_auto_schema(security=[],))
 class RecoveryPasswordRequestView(GenericAPIView):
+    """
+    post:
+    This view handles password recovery requests. It validates the provided email, checks if the user exists,
+    and sends a password recovery email if the user is found. The view is open to any user and doesn't require authentication.
+    """
     permission_classes = (AllowAny,)
     serializer_class = EmailSerializer
 
@@ -41,7 +57,13 @@ class RecoveryPasswordRequestView(GenericAPIView):
         return Response({'detail': 'check your email'}, status=status.HTTP_200_OK)
 
 
+@method_decorator(name='post', decorator=swagger_auto_schema(security=[],))
 class RecoverPasswordView(GenericAPIView):
+    """
+    post:
+    Handles password reset requests by validating the provided token and updating the user's password.
+    Accessible to any user.
+    """
     permission_classes = (AllowAny,)
     serializer_class = PasswordSerializer
 
@@ -58,6 +80,11 @@ class RecoverPasswordView(GenericAPIView):
 
 
 class ChangeEmailRequestView(GenericAPIView):
+    """
+    post:
+    Handles requests to change a user's email. The user must provide their current password and a new email.
+    Sends a confirmation email to the new address. Requires authentication.
+    """
     permission_classes = (IsAuthenticated,)
     serializer_class = PasswordSerializer
 
@@ -80,6 +107,11 @@ class ChangeEmailRequestView(GenericAPIView):
 
 
 class ChangeEmailView(GenericAPIView):
+    """
+    post:
+    Processes email change confirmation via a token. Verifies the token and updates the user's email.
+    Checks for duplicate emails and sends a warning to the old address. Requires authentication.
+    """
     permission_classes = (IsAuthenticated,)
     serializer_class = NewEmailSerializer
 
@@ -112,6 +144,11 @@ class ChangeEmailView(GenericAPIView):
 
 
 class SocketView(GenericAPIView):
+    """
+    get:
+    Generates and returns a token for socket authentication, allowing the user to connect to WebSocket services.
+    Requires authentication.
+    """
     permission_classes = (IsAuthenticated,)
 
     def get(self, *args, **kwargs):
